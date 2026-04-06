@@ -1,100 +1,67 @@
-/* coi-serviceworker v0.1.7 — adapted for gifonte.com / GitHub Pages
-   Adds COOP + COEP headers via Service Worker so SharedArrayBuffer
-   (required by FFmpeg.wasm) works on GitHub Pages.
-   Original: https://github.com/gzuidhof/coi-serviceworker
+/* coi-serviceworker.js — Cross-Origin Isolation for GitHub Pages
+   Injects COOP + COEP headers via Service Worker so SharedArrayBuffer
+   is available for FFmpeg.wasm. On first load, registers the SW and
+   reloads the page. On second load, the SW is active and sets headers.
+   Source: https://github.com/gzuidhof/coi-serviceworker (MIT License)
 */
 "use strict";
 
-const coi = self.coi || {
-  shouldRegister: () => true,
-  shouldDeregister: () => false,
-  quiet: false,
-  doReload: () => location.reload(),
-};
-
-const reloadedBySelf = sessionStorage.getItem("coiReloadedBySelf");
-sessionStorage.removeItem("coiReloadedBySelf");
-
-function isWorker() {
-  return typeof WorkerGlobalScope !== "undefined" && self instanceof WorkerGlobalScope;
-}
-
-if (isWorker()) {
-  // In a worker — intercept fetches and inject headers
+/* ── If we ARE the service worker ── */
+if (typeof importScripts === "function") {
   self.addEventListener("install", () => self.skipWaiting());
-  self.addEventListener("activate", (e) => e.waitUntil(self.clients.claim()));
-
+  self.addEventListener("activate", (e) => e.waitUntil(clients.claim()));
   self.addEventListener("fetch", (e) => {
-    const request = e.request;
-    if (request.cache === "only-if-cached" && request.mode !== "same-origin") return;
-
+    const req = e.request;
+    // Don't intercept non-GET or opaque responses
+    if (req.method !== "GET") return;
+    if (req.cache === "only-if-cached" && req.mode !== "same-origin") return;
     e.respondWith(
-      fetch(request)
-        .then((response) => {
-          if (response.status === 0) return response;
-          const newHeaders = new Headers(response.headers);
-          newHeaders.set("Cross-Origin-Embedder-Policy", "credentialless");
-          newHeaders.set("Cross-Origin-Opener-Policy", "same-origin");
-          return new Response(response.body, {
-            status: response.status,
-            statusText: response.statusText,
-            headers: newHeaders,
-          });
-        })
-        .catch((e) => {
-          console.error("[coi-sw] fetch error:", e);
-          return new Response("", { status: 503, statusText: "Service Unavailable" });
-        })
+      fetch(req).then((res) => {
+        if (!res || res.status === 0 || res.type === "opaque") return res;
+        const h = new Headers(res.headers);
+        h.set("Cross-Origin-Opener-Policy", "same-origin");
+        h.set("Cross-Origin-Embedder-Policy", "credentialless");
+        return new Response(res.body, { status: res.status, statusText: res.statusText, headers: h });
+      }).catch(() => fetch(req))
     );
   });
-} else {
-  // In the main page — register the service worker
-  if (!("serviceWorker" in navigator)) {
-    !coi.quiet && console.log("[coi-sw] Service workers not supported.");
-  } else if (window.crossOriginIsolated !== false) {
-    !coi.quiet && console.log("[coi-sw] Already cross-origin isolated. No registration needed.");
-  } else if (coi.shouldDeregister()) {
-    navigator.serviceWorker.getRegistration().then((reg) => {
-      if (reg) {
-        reg.unregister().then(() => !coi.quiet && console.log("[coi-sw] Deregistered."));
-      }
-    });
-  } else if (!coi.shouldRegister()) {
-    !coi.quiet && console.log("[coi-sw] Skipping registration (shouldRegister returned false).");
-  } else {
-    navigator.serviceWorker
-      .register(document.currentScript ? document.currentScript.src : "coi-serviceworker.js")
-      .then((registration) => {
-        !coi.quiet && console.log("[coi-sw] Registered.", registration.scope);
-
-        registration.addEventListener("updatefound", () => {
-          !coi.quiet && console.log("[coi-sw] Update found — reloading after install.");
-          registration.installing.addEventListener("statechange", (e) => {
-            if (e.target.state === "installed") {
-              sessionStorage.setItem("coiReloadedBySelf", "updatefound");
-              coi.doReload();
-            }
-          });
-        });
-
-        if (registration.active && !navigator.serviceWorker.controller) {
-          // Active but not yet controlling — need a reload
-          !coi.quiet && console.log("[coi-sw] Active but not controlling — reloading.");
-          sessionStorage.setItem("coiReloadedBySelf", "notcontrolling");
-          coi.doReload();
-        }
-      })
-      .catch((e) => {
-        !coi.quiet && console.error("[coi-sw] Registration failed:", e);
-      });
-
-    // If newly registered, reload so service worker takes control
-    navigator.serviceWorker.addEventListener("controllerchange", () => {
-      if (!reloadedBySelf) {
-        !coi.quiet && console.log("[coi-sw] Controller changed — reloading.");
-        sessionStorage.setItem("coiReloadedBySelf", "controllerchange");
-        coi.doReload();
-      }
-    });
-  }
+  return; // stop here — the rest is for the main thread
 }
+
+/* ── Main thread: register the SW ── */
+(function () {
+  if (!("serviceWorker" in navigator)) return;
+
+  // Already isolated — nothing to do
+  if (window.crossOriginIsolated) return;
+
+  // Flag to avoid infinite reload loops
+  const RELOAD_KEY = "coiReloadedBySelf";
+  const reloadedBySelf = sessionStorage.getItem(RELOAD_KEY);
+  sessionStorage.removeItem(RELOAD_KEY);
+
+  navigator.serviceWorker.register(document.currentScript.src)
+    .then((reg) => {
+      // If there's no controller yet, we need a reload after the SW activates
+      if (!navigator.serviceWorker.controller) {
+        navigator.serviceWorker.addEventListener("controllerchange", () => {
+          if (!reloadedBySelf) {
+            sessionStorage.setItem(RELOAD_KEY, "1");
+            location.reload();
+          }
+        });
+      }
+      // Handle SW updates
+      reg.addEventListener("updatefound", () => {
+        const sw = reg.installing;
+        if (!sw) return;
+        sw.addEventListener("statechange", () => {
+          if (sw.state === "installed" && navigator.serviceWorker.controller) {
+            sessionStorage.setItem(RELOAD_KEY, "1");
+            location.reload();
+          }
+        });
+      });
+    })
+    .catch((err) => console.warn("[coi-sw] Registration failed:", err));
+})();
