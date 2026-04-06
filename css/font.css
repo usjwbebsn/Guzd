@@ -6,7 +6,7 @@
 .gen-hero {
   padding-top: 52px;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 340px 1fr;
   min-height: 100vh;
   border-bottom: 1px solid var(--border);
   position: relative;
@@ -126,8 +126,28 @@
   flex: 1;
   justify-content: center;
   font-size: 0.65rem;
+  background: var(--bg);
+  color: var(--fg);
+  border-color: var(--border);
 }
 .gen-controls .btn + .btn { border-left: none; }
+.gen-controls .btn:hover { background: var(--fg); color: var(--bg); }
+.gen-controls .btn--fill { background: var(--fg); color: var(--bg); }
+.gen-controls .btn--fill:hover { background: var(--bg); color: var(--fg); }
+
+[data-theme="dark"] .gen-controls .btn {
+  background: var(--bg);
+  color: var(--fg);
+  border-color: var(--border);
+}
+[data-theme="dark"] .gen-controls .btn:hover {
+  background: var(--fg);
+  color: var(--bg);
+}
+[data-theme="dark"] .gen-controls .btn--fill {
+  background: var(--fg);
+  color: var(--bg);
+}
 
 .gen-info {
   font-family: var(--font-mono);
@@ -247,6 +267,25 @@
 }
 .btn-copy.copied::after { content: ' ✓'; }
 
+/* Dark mode explicit overrides */
+[data-theme="dark"] .btn-copy {
+  background: var(--bg);
+  color: var(--fg);
+  border-color: var(--border);
+}
+[data-theme="dark"] .btn-copy:hover,
+[data-theme="dark"] .btn-copy.copied {
+  background: var(--fg);
+  color: var(--bg);
+}
+[data-theme="dark"] .result-card {
+  background: var(--bg);
+  color: var(--fg);
+}
+[data-theme="dark"] .result-card:hover {
+  background: var(--card-bg);
+}
+
 /* ── Empty State ── */
 .empty-state {
   grid-column: 1 / -1;
@@ -306,12 +345,21 @@
   padding: 0.8rem 1.25rem;
   border-right: 1px solid var(--border);
   color: var(--gray);
-  background: none;
+  background: var(--bg);
   cursor: pointer;
   white-space: nowrap;
   transition: all 0.15s;
 }
 .filter-btn:hover, .filter-btn.active {
+  background: var(--fg);
+  color: var(--bg);
+}
+[data-theme="dark"] .filter-btn {
+  background: var(--bg);
+  color: var(--gray);
+}
+[data-theme="dark"] .filter-btn:hover,
+[data-theme="dark"] .filter-btn.active {
   background: var(--fg);
   color: var(--bg);
 }
