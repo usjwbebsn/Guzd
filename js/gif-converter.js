@@ -1,15 +1,16 @@
 /* ══════════════════════════════════════════
-   GIFONTE.COM — GIF CONVERTER ENGINE v2
-   Uses FFmpeg.wasm (WebAssembly) — dramatically
-   faster & higher quality than gif.js.
-   Inputs locked during conversion.
+   GIFONTE.COM — GIF CONVERTER ENGINE v2.1
+   FFmpeg.wasm + coi-serviceworker for GitHub Pages
+   — Patches worker URL issue in UMD build
+   — Inputs locked during conversion
 ══════════════════════════════════════════ */
 
 (function () {
   'use strict';
 
-  const FFMPEG_CDN = 'https://unpkg.com/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js';
-  const CORE_BASE  = 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd';
+  // jsdelivr is more reliable for CORS than unpkg for WASM files
+  const FFMPEG_JS_URL  = 'https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js';
+  const CORE_BASE      = 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd';
 
   let ffmpegInstance = null;
   let ffmpegLoaded   = false;
@@ -17,7 +18,7 @@
   let videoFile      = null;
   let gifBlob        = null;
 
-  // DOM refs
+  // ── DOM refs ─────────────────────────────
   const dropZone         = document.getElementById('dropZone');
   const fileInput        = document.getElementById('fileInput');
   const videoPreviewWrap = document.getElementById('videoPreviewWrap');
@@ -41,6 +42,7 @@
   const resFps           = document.getElementById('resFps');
   const resSize          = document.getElementById('resSize');
   const phases           = document.querySelectorAll('.phase-item');
+  const lockBanner       = document.getElementById('conversionLockBanner');
 
   const selWidth    = document.getElementById('selWidth');
   const selFps      = document.getElementById('selFps');
@@ -50,7 +52,6 @@
   const selDither   = document.getElementById('selDither');
 
   const SETTINGS_INPUTS = [selWidth, selFps, selStart, selDuration, selQuality, selDither];
-  const lockBanner = document.getElementById('conversionLockBanner');
 
   // ── Helpers ──────────────────────────────
   function setPhase(idx) {
@@ -81,16 +82,16 @@
     return (b / 1048576).toFixed(2) + ' MB';
   }
 
-  // Lock everything during conversion
+  // ── UI lock/unlock ────────────────────────
   function lockUI() {
     isConverting = true;
     btnConvert.disabled = true;
     btnConvert.textContent = 'PROCESSING...';
     SETTINGS_INPUTS.forEach(el => { if (el) el.disabled = true; });
     dropZone.style.pointerEvents = 'none';
-    dropZone.style.opacity = '0.45';
-    if (lockBanner) lockBanner.classList.add('visible');
+    dropZone.style.opacity = '0.4';
     fileInput.disabled = true;
+    if (lockBanner) lockBanner.classList.add('visible');
   }
 
   function unlockUI() {
@@ -100,39 +101,87 @@
     SETTINGS_INPUTS.forEach(el => { if (el) el.disabled = false; });
     dropZone.style.pointerEvents = '';
     dropZone.style.opacity = '';
-    if (lockBanner) lockBanner.classList.remove('visible');
     fileInput.disabled = false;
+    if (lockBanner) lockBanner.classList.remove('visible');
   }
 
   // ── Load FFmpeg.wasm ─────────────────────
-  function loadFFmpegLib() {
-    return new Promise((resolve, reject) => {
-      if (window.FFmpegWASM) { resolve(); return; }
+  // Fetches ffmpeg.js as text, patches the worker blob URL so
+  // the "814.ffmpeg.js" chunk is loaded correctly from CDN
+  // instead of failing with a relative-path Worker error.
+  async function loadFFmpegPatched() {
+    if (window.__ffmpegPatched) return;
+
+    setProgress(5, 'Downloading FFmpeg engine...');
+
+    // Fetch the main ffmpeg.js text
+    const resp = await fetch(FFMPEG_JS_URL);
+    if (!resp.ok) throw new Error('Failed to fetch FFmpeg library (' + resp.status + ')');
+    let src = await resp.text();
+
+    // Patch: replace the relative worker chunk URL with an absolute CDN one
+    // The UMD build uses new Worker(workerURL) where workerURL ends up as
+    // a relative "814.ffmpeg.js" that breaks on GitHub Pages.
+    // We patch it to always point to the CDN absolute URL.
+    const workerURL = 'https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/umd/814.ffmpeg.js';
+    // Replace the dynamic chunk pattern — it looks like: new Worker(new URL("./814.ffmpeg.js",...)
+    src = src.replace(
+      /new Worker\(new URL\([^)]+\)[^)]*\)/g,
+      `new Worker((()=>{const b=new Blob([],{type:'application/javascript'});const u=URL.createObjectURL(b);return u})(), {type:'classic'})` // fallback placeholder — overridden below
+    );
+    // Better approach: patch the string literal for the chunk filename
+    src = src.replace(/"814\.ffmpeg\.js"/g, JSON.stringify(workerURL));
+    src = src.replace(/'814\.ffmpeg\.js'/g, JSON.stringify(workerURL));
+
+    // Eval the patched source in global scope
+    const blob = new Blob([src], { type: 'text/javascript' });
+    const blobURL = URL.createObjectURL(blob);
+    await new Promise((resolve, reject) => {
       const s = document.createElement('script');
-      s.src = FFMPEG_CDN;
-      s.onload  = resolve;
-      s.onerror = () => reject(new Error('Could not load FFmpeg engine. Check your internet connection.'));
+      s.src = blobURL;
+      s.onload = resolve;
+      s.onerror = () => reject(new Error('FFmpeg script load failed'));
       document.head.appendChild(s);
     });
+    URL.revokeObjectURL(blobURL);
+    window.__ffmpegPatched = true;
   }
 
   async function getFFmpeg() {
     if (ffmpegLoaded && ffmpegInstance) return ffmpegInstance;
-    await loadFFmpegLib();
-    const { FFmpeg } = window.FFmpegWASM;
-    ffmpegInstance = new FFmpeg();
+
+    await loadFFmpegPatched();
+
+    // The UMD build exposes window.FFmpegWASM or window.FFmpeg
+    const FFmpegNS = window.FFmpegWASM || window.FFmpeg;
+    if (!FFmpegNS || !FFmpegNS.FFmpeg) {
+      throw new Error('FFmpeg.wasm failed to load. Check your internet connection.');
+    }
+
+    ffmpegInstance = new FFmpegNS.FFmpeg();
 
     ffmpegInstance.on('progress', ({ progress }) => {
       if (!isConverting) return;
-      const pct = 42 + Math.min(progress * 100, 100) * 0.48;
-      setProgress(pct, 'Rendering GIF frames... ' + Math.round(progress * 100) + '%');
+      const pct = 45 + Math.min(progress, 1) * 45;
+      setProgress(pct, 'Rendering GIF... ' + Math.round(progress * 100) + '%');
     });
 
-    setProgress(15, 'Loading WASM core (~5 MB)...');
-    await ffmpegInstance.load({
-      coreURL: `${CORE_BASE}/ffmpeg-core.js`,
-      wasmURL: `${CORE_BASE}/ffmpeg-core.wasm`,
-    });
+    setProgress(20, 'Loading WASM core (~5 MB)...');
+
+    // Load core as blob URLs to avoid CORS issues
+    const toBlobURL = async (url, type) => {
+      const r = await fetch(url);
+      if (!r.ok) throw new Error('Failed to fetch ' + url);
+      const b = await r.blob();
+      return URL.createObjectURL(new Blob([b], { type }));
+    };
+
+    const coreURL = await toBlobURL(`${CORE_BASE}/ffmpeg-core.js`,   'text/javascript');
+    const wasmURL = await toBlobURL(`${CORE_BASE}/ffmpeg-core.wasm`, 'application/wasm');
+
+    setProgress(35, 'Initializing engine...');
+    await ffmpegInstance.load({ coreURL, wasmURL });
+
     ffmpegLoaded = true;
     return ffmpegInstance;
   }
@@ -190,7 +239,7 @@
     progressWrap.style.display = 'block';
     lockUI();
     setPhase(0);
-    setProgress(3, 'Initializing FFmpeg engine...');
+    setProgress(2, 'Initializing...');
 
     const targetWidth = parseInt(selWidth.value, 10);
     const fps         = parseInt(selFps.value, 10);
@@ -199,50 +248,42 @@
     const quality     = parseInt(selQuality.value, 10);
     const dither      = selDither.value;
 
-    // Map quality 1–20 → palette colors 256–64
+    // quality 1–20 → palette colors 256–64
     const paletteColors = Math.round(256 - ((quality - 1) / 19) * 192);
 
-    // Dither mapping
-    const ditherMode = dither === 'none'          ? 'none' :
-                       dither === 'bayer'          ? 'bayer:bayer_scale=3' :
-                       dither === 'sierra2_4a'     ? 'sierra2_4a' :
-                                                     'floyd_steinberg';
+    const ditherMode = dither === 'none'       ? 'none' :
+                       dither === 'bayer'      ? 'bayer:bayer_scale=3' :
+                       dither === 'sierra2_4a' ? 'sierra2_4a' :
+                                                 'floyd_steinberg';
 
     try {
-      // Phase 0: Load engine
+      // Phase 0: Engine
       const ffmpeg = await getFFmpeg();
       if (!isConverting) return;
 
-      // Phase 1: Write file to WASM FS
+      // Phase 1: Write video to WASM FS
       setPhase(1);
-      setProgress(24, 'Reading video into memory...');
+      setProgress(38, 'Reading video into memory...');
       const buf = await videoFile.arrayBuffer();
       if (!isConverting) return;
       await ffmpeg.writeFile('input.mp4', new Uint8Array(buf));
-      setProgress(34, 'Video buffered. Generating palette...');
+      setProgress(42, 'Video buffered. Generating palette...');
 
-      // Phase 2: 2-pass encoding (palettegen → paletteuse)
+      // Phase 2: 2-pass FFmpeg encoding
       setPhase(2);
-      setProgress(38, 'Pass 1 — Generating optimal color palette...');
-
       const vfBase = `fps=${fps},scale=${targetWidth}:-1:flags=lanczos`;
 
-      // Pass 1: palette
       await ffmpeg.exec([
-        '-ss', String(startSec),
-        '-t',  String(duration),
+        '-ss', String(startSec), '-t', String(duration),
         '-i',  'input.mp4',
         '-vf', `${vfBase},palettegen=max_colors=${paletteColors}:stats_mode=single`,
         '-y',  'palette.png'
       ]);
       if (!isConverting) return;
 
-      setProgress(42, 'Pass 2 — Rendering GIF with palette...');
-
-      // Pass 2: GIF
+      setProgress(45, 'Pass 2 — Rendering GIF...');
       await ffmpeg.exec([
-        '-ss', String(startSec),
-        '-t',  String(duration),
+        '-ss', String(startSec), '-t', String(duration),
         '-i',  'input.mp4',
         '-i',  'palette.png',
         '-lavfi', `${vfBase}[x];[x][1:v]paletteuse=dither=${ditherMode}`,
@@ -250,13 +291,12 @@
       ]);
       if (!isConverting) return;
 
-      // Phase 3: Read & deliver
+      // Phase 3: Read result
       setPhase(3);
-      setProgress(92, 'Reading output file...');
+      setProgress(92, 'Reading output...');
       const data = await ffmpeg.readFile('output.gif');
       if (!isConverting) return;
 
-      // Cleanup
       try { await ffmpeg.deleteFile('input.mp4');  } catch(e) {}
       try { await ffmpeg.deleteFile('palette.png'); } catch(e) {}
       try { await ffmpeg.deleteFile('output.gif');  } catch(e) {}
@@ -269,7 +309,7 @@
       const gifImg = new Image();
       await new Promise(r => { gifImg.onload = r; gifImg.src = gifUrl; });
 
-      resultImg.src        = gifUrl;
+      resultImg.src            = gifUrl;
       resDimension.textContent = `${gifImg.naturalWidth}×${gifImg.naturalHeight}`;
       resFrames.textContent    = String(Math.round(duration * fps));
       resFps.textContent       = `${fps} fps`;
@@ -283,8 +323,8 @@
         progressWrap.style.display = 'none';
         setProgress(0, '');
       } else {
-        console.error('[GIF] Error:', err);
-        showError(err.message || 'Conversion failed. Try a shorter clip or lower quality settings.');
+        console.error('[GIF]', err);
+        showError(err.message || 'Conversion failed. Try a shorter clip or lower quality.');
       }
     } finally {
       unlockUI();
@@ -295,9 +335,9 @@
   // ── Cancel ───────────────────────────────
   async function cancelConvert() {
     if (!isConverting) return;
-    const wasConverting = isConverting;
-    unlockUI(); // set isConverting = false first
-    if (wasConverting && ffmpegInstance) {
+    const was = isConverting;
+    unlockUI();
+    if (was && ffmpegInstance) {
       try { ffmpegInstance.terminate(); } catch(e) {}
       ffmpegInstance = null;
       ffmpegLoaded   = false;
@@ -346,8 +386,8 @@
   document.addEventListener('DOMContentLoaded', () => {
     btnConvert.disabled = true;
     setPhase(-1);
-    // Pre-load FFmpeg.wasm silently in background
-    setTimeout(() => { getFFmpeg().catch(() => {}); }, 2000);
+    // Pre-load FFmpeg silently in background after 1.5s
+    setTimeout(() => { getFFmpeg().catch(() => {}); }, 1500);
   });
 
 })();
