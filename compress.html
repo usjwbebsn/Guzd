@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Image Compressor | gifonte.com</title>
+  <meta name="description" content="Compress PNG, JPG, WebP images up to 90% smaller. Batch processing, quality control, resolution scaling from 200p to 4K. Zero uploads. gifonte.com" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/compress.css" />
+</head>
+<body>
+
+  <nav class="nav">
+    <a class="nav__logo" href="index.html">gifonte.com</a>
+    <div class="nav__links">
+      <a href="index.html#hero"><span class="icon icon--sm"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span> Home</a>
+      <a href="index.html#tools"><span class="icon icon--sm"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></span> Tools</a>
+      <a href="font.html"><span class="icon icon--sm"><svg viewBox="0 0 24 24"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg></span> Font</a>
+      <a href="gif.html"><span class="icon icon--sm"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/></svg></span> GIF</a>
+      <a href="palette.html"><span class="icon icon--sm"><svg viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 11-11.31 0z"/></svg></span> Palette</a>
+      <a href="convert.html"><span class="icon icon--sm"><svg viewBox="0 0 24 24"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 014-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 01-4 4H3"/></svg></span> Convert</a>
+      <a href="compress.html" class="active"><span class="icon icon--sm"><svg viewBox="0 0 24 24"><polyline points="4 14 10 14 10 20"/><polyline points="20 10 14 10 14 4"/><line x1="10" y1="14" x2="21" y2="3"/><line x1="3" y1="21" x2="14" y2="10"/></svg></span> Compress</a>
+    </div>
+    <div class="nav__right">
+      <button class="btn-theme" id="btnTheme" title="Toggle dark mode">
+        <span class="icon icon--md icon-sun"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></span>
+        <span class="icon icon--md icon-moon"><svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg></span>
+      </button>
+      <button class="nav__hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+  <div class="nav__mobile" id="mobileMenu">
+    <a href="index.html">Home</a><a href="font.html">Font Generator</a>
+    <a href="gif.html">Video → GIF</a><a href="palette.html">Color Palette</a>
+    <a href="convert.html">Doc Converter</a><a href="compress.html">Image Compressor</a>
+  </div>
+
+  <!-- ══ HERO ═══════════════════════════════ -->
+  <div class="cmp-hero">
+    <div class="cmp-hero__left">
+      <div>
+        <div class="cmp-hero__eyebrow">Tool 05 · Image Compressor</div>
+        <h1 class="cmp-hero__title">IMAGE<br><em>compress</em><br>.PRO</h1>
+      </div>
+      <div class="cmp-hero__stats">
+        <div class="cmp-hero__stat"><strong id="statFiles">0</strong><span>Files Processed</span></div>
+        <div class="cmp-hero__stat"><strong id="statSaved">0 KB</strong><span>Space Saved</span></div>
+        <div class="cmp-hero__stat"><strong>4K</strong><span>Max Output</span></div>
+      </div>
+    </div>
+
+    <div class="cmp-hero__right">
+
+      <!-- DROP ZONE -->
+      <div class="cmp-drop" id="cmpDrop">
+        <input type="file" id="cmpInput" accept="image/png,image/jpeg,image/webp,image/gif,image/bmp,image/tiff,image/avif" multiple />
+        <div class="cmp-drop__icon">
+          <svg viewBox="0 0 24 24" width="32" height="32"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        </div>
+        <div class="cmp-drop__title">Drop images here</div>
+        <div class="cmp-drop__sub">PNG · JPG · WebP · GIF · BMP · TIFF · AVIF · Batch supported</div>
+        <div class="cmp-drop__hint">or click to browse</div>
+      </div>
+
+      <!-- SETTINGS PANEL (collapsed by default, sections toggle) -->
+      <div class="cmp-settings" id="cmpSettings">
+
+        <!-- Quick presets bar -->
+        <div class="cmp-presets">
+          <span class="cmp-presets__label">Preset</span>
+          <button class="cmp-preset-btn" data-preset="web">Web</button>
+          <button class="cmp-preset-btn" data-preset="social">Social</button>
+          <button class="cmp-preset-btn active" data-preset="balanced">Balanced</button>
+          <button class="cmp-preset-btn" data-preset="print">Print</button>
+          <button class="cmp-preset-btn" data-preset="lossless">Lossless</button>
+          <button class="cmp-preset-btn" data-preset="max">Max Compress</button>
+        </div>
+
+        <!-- Section: Quality -->
+        <div class="cmp-section">
+          <button class="cmp-section__head" data-section="quality">
+            <span class="cmp-section__title">Quality & Compression</span>
+            <span class="cmp-section__val" id="qualVal">82%</span>
+            <span class="cmp-section__arrow">▾</span>
+          </button>
+          <div class="cmp-section__body open" id="secQuality">
+            <div class="cmp-row">
+              <label>Compression Level</label>
+              <div class="cmp-slider-wrap">
+                <input type="range" id="rngQuality" min="1" max="100" value="82" />
+                <div class="cmp-slider-marks">
+                  <span>Max Compress</span>
+                  <span>Balanced</span>
+                  <span>Max Quality</span>
+                </div>
+              </div>
+            </div>
+            <div class="cmp-row cmp-row--cols">
+              <div class="cmp-field">
+                <label>Output Format</label>
+                <select id="selFormat">
+                  <option value="auto">Auto (keep original)</option>
+                  <option value="jpeg">JPEG</option>
+                  <option value="png">PNG</option>
+                  <option value="webp">WebP (smallest)</option>
+                </select>
+              </div>
+              <div class="cmp-field">
+                <label>Color Depth</label>
+                <select id="selColor">
+                  <option value="auto">Auto</option>
+                  <option value="full">Full color (24-bit)</option>
+                  <option value="high">High (18-bit)</option>
+                  <option value="medium">Medium (16-bit)</option>
+                  <option value="low">Low (8-bit)</option>
+                </select>
+              </div>
+            </div>
+            <div class="cmp-row cmp-row--cols">
+              <div class="cmp-field">
+                <label>Chroma Subsampling</label>
+                <select id="selChroma">
+                  <option value="4:4:4">4:4:4 (Best quality)</option>
+                  <option value="4:2:2" selected>4:2:2 (Balanced)</option>
+                  <option value="4:2:0">4:2:0 (Smallest)</option>
+                </select>
+              </div>
+              <div class="cmp-field">
+                <label>Sharpening</label>
+                <select id="selSharp">
+                  <option value="0">None</option>
+                  <option value="1" selected>Light</option>
+                  <option value="2">Medium</option>
+                  <option value="3">Strong</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section: Resolution -->
+        <div class="cmp-section">
+          <button class="cmp-section__head" data-section="resolution">
+            <span class="cmp-section__title">Resolution & Size</span>
+            <span class="cmp-section__val" id="resVal">Original</span>
+            <span class="cmp-section__arrow">▾</span>
+          </button>
+          <div class="cmp-section__body" id="secResolution">
+            <div class="cmp-row">
+              <label>Output Resolution</label>
+              <div class="cmp-res-grid">
+                <button class="cmp-res-btn active" data-res="original">Original</button>
+                <button class="cmp-res-btn" data-res="4k">4K (3840px)</button>
+                <button class="cmp-res-btn" data-res="2k">2K (2560px)</button>
+                <button class="cmp-res-btn" data-res="fhd">FHD (1920px)</button>
+                <button class="cmp-res-btn" data-res="hd">HD (1280px)</button>
+                <button class="cmp-res-btn" data-res="720">720p</button>
+                <button class="cmp-res-btn" data-res="480">480p</button>
+                <button class="cmp-res-btn" data-res="360">360p</button>
+                <button class="cmp-res-btn" data-res="240">240p</button>
+                <button class="cmp-res-btn" data-res="200">200p</button>
+                <button class="cmp-res-btn" data-res="custom">Custom…</button>
+              </div>
+            </div>
+            <div class="cmp-row cmp-row--cols" id="customResRow" style="display:none">
+              <div class="cmp-field">
+                <label>Width (px)</label>
+                <input type="number" id="customW" placeholder="e.g. 1600" min="1" max="7680" />
+              </div>
+              <div class="cmp-field">
+                <label>Height (px)</label>
+                <input type="number" id="customH" placeholder="Leave blank = auto" min="1" max="7680" />
+              </div>
+            </div>
+            <div class="cmp-row cmp-row--cols">
+              <div class="cmp-field">
+                <label>Fit Mode</label>
+                <select id="selFit">
+                  <option value="contain">Contain (letterbox)</option>
+                  <option value="cover">Cover (crop)</option>
+                  <option value="fill">Fill (stretch)</option>
+                  <option value="downscale">Downscale only</option>
+                </select>
+              </div>
+              <div class="cmp-field">
+                <label>DPI / PPI</label>
+                <select id="selDpi">
+                  <option value="72">72 dpi (Screen)</option>
+                  <option value="96" selected>96 dpi (Standard)</option>
+                  <option value="150">150 dpi (Medium print)</option>
+                  <option value="300">300 dpi (Print)</option>
+                  <option value="600">600 dpi (High print)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section: Advanced -->
+        <div class="cmp-section">
+          <button class="cmp-section__head" data-section="advanced">
+            <span class="cmp-section__title">Advanced Options</span>
+            <span class="cmp-section__val">—</span>
+            <span class="cmp-section__arrow">▾</span>
+          </button>
+          <div class="cmp-section__body" id="secAdvanced">
+            <div class="cmp-row cmp-row--cols">
+              <div class="cmp-field">
+                <label>Strip Metadata</label>
+                <select id="selMeta">
+                  <option value="all" selected>All (EXIF, IPTC, XMP)</option>
+                  <option value="exif">EXIF only</option>
+                  <option value="keep">Keep all metadata</option>
+                </select>
+              </div>
+              <div class="cmp-field">
+                <label>Background Fill</label>
+                <select id="selBg">
+                  <option value="white" selected>White</option>
+                  <option value="black">Black</option>
+                  <option value="transparent">Transparent</option>
+                  <option value="custom">Custom color</option>
+                </select>
+              </div>
+            </div>
+            <div class="cmp-row cmp-row--cols">
+              <div class="cmp-field">
+                <label>Noise Reduction</label>
+                <select id="selNoise">
+                  <option value="0" selected>None</option>
+                  <option value="1">Light</option>
+                  <option value="2">Medium</option>
+                  <option value="3">Aggressive</option>
+                </select>
+              </div>
+              <div class="cmp-field">
+                <label>Progressive JPEG</label>
+                <select id="selProgressive">
+                  <option value="1" selected>Yes (faster load)</option>
+                  <option value="0">No (baseline)</option>
+                </select>
+              </div>
+            </div>
+            <div class="cmp-row cmp-row--cols">
+              <div class="cmp-field">
+                <label>Max File Size Target</label>
+                <select id="selMaxSize">
+                  <option value="0" selected>No limit</option>
+                  <option value="100">100 KB</option>
+                  <option value="200">200 KB</option>
+                  <option value="500">500 KB</option>
+                  <option value="1000">1 MB</option>
+                  <option value="2000">2 MB</option>
+                </select>
+              </div>
+              <div class="cmp-field">
+                <label>Batch Naming</label>
+                <select id="selNaming">
+                  <option value="suffix" selected>original_compressed</option>
+                  <option value="prefix">compressed_original</option>
+                  <option value="replace">Replace original name</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Compress Button -->
+        <button class="cmp-go-btn" id="cmpGoBtn" disabled>
+          <span class="cmp-go-btn__icon">⬇</span>
+          <span class="cmp-go-btn__text">Compress Images</span>
+          <span class="cmp-go-btn__count" id="cmpGoCount"></span>
+        </button>
+      </div>
+
+      <!-- QUEUE -->
+      <div class="cmp-queue" id="cmpQueue"></div>
+
+      <!-- GLOBAL PROGRESS -->
+      <div class="cmp-global-progress" id="cmpGlobalProgress">
+        <div class="cmp-gp__header">
+          <span class="cmp-gp__title">COMPRESSING</span>
+          <span class="cmp-gp__pct" id="cmpGpPct">0%</span>
+        </div>
+        <div class="cmp-gp__bar-wrap">
+          <div class="cmp-gp__bar" id="cmpGpBar"></div>
+        </div>
+        <div class="cmp-gp__phases" id="cmpGpPhases">
+          <span class="phase">Loading</span>
+          <span class="phase">Resizing</span>
+          <span class="phase">Encoding</span>
+          <span class="phase">Saving</span>
+        </div>
+        <div class="cmp-gp__log" id="cmpGpLog">Ready…</div>
+      </div>
+
+      <!-- RESULTS SUMMARY -->
+      <div class="cmp-results" id="cmpResults">
+        <div class="cmp-results__header">
+          <span class="cmp-results__title">DONE</span>
+          <button class="cmp-results__reset" id="cmpResetAll">✕ New batch</button>
+        </div>
+        <div class="cmp-results__stats" id="cmpResultsStats"></div>
+        <div class="cmp-results__list" id="cmpResultsList"></div>
+        <div class="cmp-results__actions">
+          <button class="btn btn--fill" id="cmpDownloadAll">↓ Download All as ZIP</button>
+          <button class="btn" id="cmpCompareBtn">⇄ Before / After</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- BEFORE/AFTER MODAL -->
+  <div class="cmp-modal" id="cmpModal">
+    <div class="cmp-modal__inner">
+      <div class="cmp-modal__header">
+        <span class="cmp-modal__title">BEFORE / AFTER</span>
+        <button class="cmp-modal__close" id="cmpModalClose">✕</button>
+      </div>
+      <div class="cmp-modal__select" id="cmpModalSelect"></div>
+      <div class="cmp-compare-wrap" id="cmpCompareWrap">
+        <div class="cmp-compare">
+          <div class="cmp-compare__side" id="cmpSideBefore">
+            <canvas id="cmpCanvasBefore"></canvas>
+            <div class="cmp-compare__label">BEFORE<span id="cmpLabelBefore"></span></div>
+          </div>
+          <div class="cmp-compare__divider" id="cmpDivider"></div>
+          <div class="cmp-compare__side" id="cmpSideAfter">
+            <canvas id="cmpCanvasAfter"></canvas>
+            <div class="cmp-compare__label">AFTER<span id="cmpLabelAfter"></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="cmp-modal-bg" id="cmpModalBg"></div>
+
+  <div id="toast"></div>
+  <script src="js/main.js"></script>
+  <script src="js/compress.js"></script>
+</body>
+</html>

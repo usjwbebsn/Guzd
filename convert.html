@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document Converter | gifonte.com</title>
+  <meta name="description" content="Convert PDF, Word, Excel, PowerPoint, CSV, JSON, Markdown, HTML, images and more — 19 formats, 50+ conversion routes. No uploads. No server. gifonte.com" />
+  <meta name="keywords" content="document converter, pdf to word, word to pdf, xlsx to csv, convert files online, no upload converter, browser converter" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/convert.css" />
+</head>
+<body>
+
+  <!-- ══ NAVIGATION ══════════════════════════ -->
+  <nav class="nav">
+    <a class="nav__logo" href="index.html">gifonte.com</a>
+    <div class="nav__links">
+      <a href="index.html#hero">
+        <span class="icon icon--sm"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span> Home
+      </a>
+      <a href="index.html#tools">
+        <span class="icon icon--sm"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></span> Tools
+      </a>
+      <a href="font.html">
+        <span class="icon icon--sm"><svg viewBox="0 0 24 24"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg></span> Font Gen
+      </a>
+      <a href="gif.html">
+        <span class="icon icon--sm"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="2" y1="7" x2="7" y2="7"/><line x1="2" y1="17" x2="7" y2="17"/><line x1="17" y1="17" x2="22" y2="17"/><line x1="17" y1="7" x2="22" y2="7"/></svg></span> GIF
+      </a>
+      <a href="palette.html">
+        <span class="icon icon--sm"><svg viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 11-11.31 0z"/></svg></span> Palette
+      </a>
+      <a href="convert.html" class="active">
+        <span class="icon icon--sm"><svg viewBox="0 0 24 24"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 014-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 01-4 4H3"/></svg></span> Convert
+      </a>
+      <a href="privacy.html">
+        <span class="icon icon--sm"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span> Privacy
+      </a>
+    </div>
+    <div class="nav__right">
+      <div class="nav__search" id="navSearch">
+        <input class="nav__search-input" id="searchInput" type="text" placeholder="Search tools…" autocomplete="off" />
+        <div class="search-results" id="searchResults">
+          <a href="font.html" class="search-result-item"><span class="icon icon--sm"><svg viewBox="0 0 24 24"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg></span><div><strong>Font Generator</strong><span>30 Unicode text styles</span></div></a>
+          <a href="gif.html" class="search-result-item"><span class="icon icon--sm"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2.18"/></svg></span><div><strong>Video → GIF</strong><span>Convert video to GIF</span></div></a>
+          <a href="palette.html" class="search-result-item"><span class="icon icon--sm"><svg viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 11-11.31 0z"/></svg></span><div><strong>Color Palette</strong><span>Extract colors from images</span></div></a>
+          <a href="convert.html" class="search-result-item"><span class="icon icon--sm"><svg viewBox="0 0 24 24"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 014-4h14"/></svg></span><div><strong>Doc Converter</strong><span>19 formats · 50+ routes</span></div></a>
+          <div class="search-no-results" id="searchNoResults" style="display:none">No results</div>
+        </div>
+        <button class="nav__search-btn" id="searchBtn" title="Search">
+          <span class="icon icon--md"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+        </button>
+      </div>
+      <button class="btn-theme" id="btnTheme" title="Toggle dark mode">
+        <span class="icon icon--md icon-sun"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></span>
+        <span class="icon icon--md icon-moon"><svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg></span>
+      </button>
+      <button class="nav__hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+  <div class="nav__mobile" id="mobileMenu">
+    <a href="index.html#hero">Home</a>
+    <a href="index.html#tools">Tools</a>
+    <a href="font.html">Font Generator</a>
+    <a href="gif.html">Video → GIF</a>
+    <a href="palette.html">Color Palette</a>
+    <a href="convert.html">Doc Converter</a>
+    <a href="privacy.html">Privacy</a>
+  </div>
+
+  <!-- ══ HERO ════════════════════════════════ -->
+  <div class="conv-hero">
+    <div class="conv-hero__left">
+      <div>
+        <div class="conv-hero__eyebrow">Tool 04 · Document Converter</div>
+        <h1 class="conv-hero__title">
+          DOC<br>
+          <em>convert</em><br>
+          .COM
+        </h1>
+      </div>
+      <div class="conv-hero__bottom">
+        <div class="conv-hero__stat">
+          <strong>19</strong>
+          <span>Input Formats</span>
+        </div>
+        <div class="conv-hero__stat">
+          <strong>50+</strong>
+          <span>Convert Routes</span>
+        </div>
+        <div class="conv-hero__stat">
+          <strong id="convStatsTotal">0</strong>
+          <span>Conversions Done</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="conv-hero__right">
+
+      <!-- Step 01 — Drop file -->
+      <div class="conv-step-label">01 — Drop your file</div>
+      <div class="drop-zone" id="convDropZone">
+        <input type="file" id="convFileInput" accept=".pdf,.docx,.doc,.xlsx,.xls,.csv,.json,.pptx,.ppt,.txt,.md,.html,.htm,.png,.jpg,.jpeg,.webp,.gif,.bmp,.svg,.rtf,.ods,.odt,.epub" />
+        <div class="drop-zone__icon">⬆</div>
+        <div class="drop-zone__text">Drop your file here</div>
+        <div class="drop-zone__sub" id="convFormatsBanner">PDF · DOCX · XLSX · PPTX · CSV · JSON · MD · HTML · PNG · JPG · SVG · EPUB…</div>
+      </div>
+
+      <!-- File info bar -->
+      <div class="conv-file-info" id="convFileInfo">
+        <div class="conv-file-info__icon">◼</div>
+        <div class="conv-file-info__meta">
+          <span class="conv-file-info__name" id="convFileName">—</span>
+          <span class="conv-file-info__details">
+            <span id="convFileType">—</span>
+            <span class="conv-file-info__sep">·</span>
+            <span id="convFileSize">—</span>
+          </span>
+        </div>
+        <button class="conv-reset-sm" id="convReset" title="Reset">✕</button>
+      </div>
+
+      <!-- Step 02 — Choose output -->
+      <div class="conv-output-section" id="convOutputSection">
+        <div class="conv-step-label">02 — Convert to</div>
+        <div class="conv-out-grid" id="convOutputBtns"></div>
+      </div>
+
+      <!-- Progress -->
+      <div class="conv-progress" id="convProgress">
+        <div class="conv-progress__bar-wrap">
+          <div class="conv-progress__bar" id="convProgressBar"></div>
+        </div>
+        <div class="conv-progress__msg" id="convProgressMsg">Processing…</div>
+      </div>
+
+      <!-- Result -->
+      <div class="conv-result" id="convResult">
+        <div class="conv-result__inner">
+          <div class="conv-result__check">✓</div>
+          <div class="conv-result__meta">
+            <span class="conv-result__name" id="convResultName">output.pdf</span>
+            <span class="conv-result__size" id="convResultSize">—</span>
+          </div>
+          <a class="btn btn--fill conv-result__dl" id="convResultDl" href="#" download>↓ Download</a>
+        </div>
+        <!-- Preview -->
+        <div class="conv-preview" id="convPreview">
+          <div id="convPreviewEl"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══ FORMATS MATRIX ════════════════════ -->
+  <section class="section" id="formats">
+    <div class="section__label">Supported Formats</div>
+    <h2 class="section__title reveal">FORMATS</h2>
+    <p class="section__subtitle reveal">19 input types. 50+ conversion routes. Everything runs locally in your browser — your files never leave your device.</p>
+
+    <div class="conv-matrix-wrap reveal">
+      <table class="conv-matrix" id="convMatrix">
+        <thead>
+          <tr>
+            <th>Input</th>
+            <th>Type</th>
+            <th>Converts To</th>
+          </tr>
+        </thead>
+      </table>
+    </div>
+  </section>
+
+  <!-- ══ FEATURES ════════════════════════════ -->
+  <section class="section" id="features" style="border-top: 1px solid var(--border);">
+    <div class="section__label">Why It's Different</div>
+    <h2 class="section__title reveal">PRIVATE.<br>FAST.<br>FREE.</h2>
+    <div class="conv-features reveal">
+      <div class="conv-feature">
+        <div class="conv-feature__num">01</div>
+        <h3 class="conv-feature__title">Zero Uploads</h3>
+        <p class="conv-feature__text">Your file never leaves your browser. All conversions run locally using WebAssembly and native JS engines. No server ever sees your data.</p>
+      </div>
+      <div class="conv-feature">
+        <div class="conv-feature__num">02</div>
+        <h3 class="conv-feature__title">No Limits</h3>
+        <p class="conv-feature__text">No file size caps, no daily limits, no watermarks, no premium paywalls. Convert as many files as you need, as large as your browser can handle.</p>
+      </div>
+      <div class="conv-feature">
+        <div class="conv-feature__num">03</div>
+        <h3 class="conv-feature__title">19 Formats</h3>
+        <p class="conv-feature__text">PDF, DOCX, XLSX, PPTX, CSV, JSON, Markdown, HTML, PNG, JPG, SVG, WebP, RTF, ODS, ODT, EPUB and more. One tool replaces a dozen sites.</p>
+      </div>
+      <div class="conv-feature">
+        <div class="conv-feature__num">04</div>
+        <h3 class="conv-feature__title">Instant Preview</h3>
+        <p class="conv-feature__text">Image and HTML outputs render inline before you download. Verify your conversion looks right without opening a separate app.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ FOOTER ══════════════════════════════ -->
+  <footer class="footer">
+    <div class="footer__top">
+      <div>
+        <div class="footer__logo">gifonte.com</div>
+        <p class="footer__tagline">Text tools & media utilities.<br>No account. No server.</p>
+      </div>
+      <div class="footer__links">
+        <a href="font.html">Font Generator</a>
+        <a href="gif.html">Video → GIF</a>
+        <a href="palette.html">Color Palette</a>
+        <a href="convert.html">Doc Converter</a>
+      </div>
+      <div class="footer__links">
+        <a href="about.html">About</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="terms.html">Terms</a>
+        <a href="cookies.html">Cookies</a>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>© 2025 gifonte.com</span>
+      <span>Built for creators. Runs in your browser.</span>
+    </div>
+  </footer>
+
+  <div id="toast"></div>
+
+  <script src="js/main.js"></script>
+  <script src="js/convert.js"></script>
+</body>
+</html>
