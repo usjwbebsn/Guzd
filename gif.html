@@ -8,8 +8,6 @@
   <meta name="keywords" content="video to gif, gif converter, mp4 to gif, gif maker online, no upload gif converter" />
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/gif.css" />
-  <!-- coi-serviceworker: enables SharedArrayBuffer on GitHub Pages for FFmpeg.wasm -->
-  <script src="coi-serviceworker.js"></script>
 </head>
 <body>
 
@@ -207,9 +205,7 @@
 
       <!-- Info -->
       <div class="gif-info">
-        <strong>Powered by FFmpeg.wasm:</strong> This tool runs the real FFmpeg video engine compiled to WebAssembly — the same engine used in professional video software.
-        A 2-pass palette strategy (palettegen + paletteuse with lanczos scaling) produces dramatically better color quality than canvas-based encoders.
-        Your video never leaves your device. FFmpeg (~5 MB) loads once and is cached for subsequent conversions.
+        <strong>How it works:</strong> Frames are extracted from your video using the browser's canvas API, then encoded with gif.js Web Workers. NeuQuant color quantization + configurable dithering produce high-quality output. No file ever leaves your device — 100% local processing.
       </div>
 
     </div><!-- /gif-hero__right -->
