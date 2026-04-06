@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Video to GIF Converter | gifonte.com</title>
+  <meta name="description" content="Convert any video to a high-quality GIF in your browser. No uploads, no server. Control FPS, size, duration and quality. gifonte.com" />
+  <meta name="keywords" content="video to gif, gif converter, mp4 to gif, gif maker online, no upload gif converter" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/gif.css" />
+</head>
+<body>
+
+  <!-- ══ NAVIGATION ══════════════════════════ -->
+  <nav class="nav">
+    <a class="nav__logo" href="index.html">gifonte.com</a>
+    <div class="nav__links">
+      <a href="index.html#hero">Home</a>
+      <a href="index.html#tools">Tools</a>
+      <a href="index.html#features">Features</a>
+      <a href="index.html#about">About</a>
+      <a href="index.html#how">How It Works</a>
+      <a href="index.html#contact">Contact</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="about.html">About Us</a>
+    </div>
+    <div class="nav__right">
+      <button class="btn-theme" id="btnTheme" title="Toggle dark mode">◐</button>
+      <button class="nav__hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+  <div class="nav__mobile" id="mobileMenu">
+    <a href="index.html">Home</a>
+    <a href="index.html#tools">Tools</a>
+    <a href="index.html#about">About</a>
+    <a href="privacy.html">Privacy</a>
+    <a href="about.html">About Us</a>
+  </div>
+
+  <!-- ══ HERO ════════════════════════════════ -->
+  <div class="gif-hero">
+    <!-- Left panel -->
+    <div class="gif-hero__left">
+      <div>
+        <div class="gif-hero__eyebrow">Tool 02 · Video Converter</div>
+        <h1 class="gif-hero__title">
+          VIDEO<br>
+          <em>to</em><br>
+          GIF
+        </h1>
+      </div>
+      <div class="gif-hero__bottom">
+        <div class="gif-hero__stat">
+          <strong>4K</strong>
+          <span>Max Width</span>
+        </div>
+        <div class="gif-hero__stat">
+          <strong>24</strong>
+          <span>Max FPS</span>
+        </div>
+        <div class="gif-hero__stat">
+          <strong>0</strong>
+          <span>Uploads</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right panel: upload + settings -->
+    <div class="gif-hero__right">
+
+      <!-- Upload -->
+      <div class="upload-label">01 — Drop your video</div>
+      <div class="drop-zone" id="dropZone">
+        <input type="file" id="fileInput" accept="video/*" />
+        <div class="drop-zone__icon">▶</div>
+        <div class="drop-zone__text">Drop video here</div>
+        <div class="drop-zone__sub">MP4 · WebM · MOV · AVI · MKV · Any format</div>
+      </div>
+
+      <!-- Video preview -->
+      <div id="videoPreviewWrap">
+        <video id="videoPreview" muted playsinline preload="metadata" controls></video>
+        <div class="video-info">
+          <span>Duration: <span id="videoDuration">—</span></span>
+          <span>Resolution: <span id="videoRes">—</span></span>
+          <span>Size: <span id="videoSize">—</span></span>
+        </div>
+      </div>
+
+      <!-- Settings -->
+      <div class="upload-label">02 — Configure output</div>
+      <div class="settings-grid">
+
+        <div class="setting-item">
+          <label for="selWidth">Output width</label>
+          <select id="selWidth">
+            <option value="240">240px — Thumbnail</option>
+            <option value="320">320px — Small</option>
+            <option value="480" selected>480px — Medium</option>
+            <option value="640">640px — Large</option>
+            <option value="800">800px — Wide</option>
+            <option value="1080">1080px — HD</option>
+          </select>
+        </div>
+
+        <div class="setting-item">
+          <label for="selFps">Frame rate</label>
+          <select id="selFps">
+            <option value="8">8 fps — Minimal</option>
+            <option value="10">10 fps — Small file</option>
+            <option value="12">12 fps — Balanced</option>
+            <option value="15" selected>15 fps — Smooth</option>
+            <option value="20">20 fps — High</option>
+            <option value="24">24 fps — Cinema</option>
+          </select>
+        </div>
+
+        <div class="setting-item">
+          <label for="selStart">Start time (sec)</label>
+          <input type="number" id="selStart" value="0" min="0" step="0.5" />
+        </div>
+
+        <div class="setting-item">
+          <label for="selDuration">Duration (sec)</label>
+          <input type="number" id="selDuration" value="5" min="1" max="20" step="0.5" />
+        </div>
+
+        <div class="setting-item">
+          <label for="selQuality">Quality (1=best · 20=fast)</label>
+          <input type="range" id="selQuality" min="1" max="20" value="3" data-unit="" />
+          <span class="range-val">3</span>
+        </div>
+
+        <div class="setting-item">
+          <label for="selDither">Dithering</label>
+          <select id="selDither">
+            <option value="none">None — Sharp / flat graphics</option>
+            <option value="floyd_steinberg" selected>Floyd-Steinberg — Best gradients</option>
+            <option value="bayer">Bayer — Fast, patterned</option>
+            <option value="sierra2_4a">Sierra2 — Balanced</option>
+          </select>
+        </div>
+
+      </div>
+
+      <!-- Conversion lock banner -->
+      <div id="conversionLockBanner">⏳ Converting — settings locked until done or cancelled</div>
+
+      <!-- Error -->
+      <div class="error-msg" id="errorMsg"></div>
+
+      <!-- Controls -->
+      <div class="upload-label">03 — Convert</div>
+      <div class="gif-controls">
+        <button class="btn btn--fill" id="btnConvert" disabled>→ Convert to GIF</button>
+        <button class="btn" id="btnCancel">✕ Cancel</button>
+      </div>
+
+      <!-- Progress -->
+      <div id="progressWrap">
+        <div class="progress-header">
+          <div class="progress-title">PROCESSING</div>
+          <div class="progress-pct" id="progressPct">0%</div>
+        </div>
+        <div class="progress-bar-wrap">
+          <div class="progress-bar-fill" id="progressFill"></div>
+        </div>
+        <div class="progress-phases">
+          <div class="phase-item" data-phase="0">Init</div>
+          <div class="phase-item" data-phase="1">Extract Frames</div>
+          <div class="phase-item" data-phase="2">Encode GIF</div>
+          <div class="phase-item" data-phase="3">Finalize</div>
+        </div>
+        <div class="progress-log" id="progressLog">Initializing...</div>
+      </div>
+
+      <!-- Result -->
+      <div id="resultWrap">
+        <div class="result-preview-wrap">
+          <img id="resultImg" alt="Generated GIF" />
+        </div>
+        <div class="result-meta">
+          <div class="result-meta-item">
+            <div class="result-meta-item__label">Dimensions</div>
+            <div class="result-meta-item__val" id="resDimension">—</div>
+          </div>
+          <div class="result-meta-item">
+            <div class="result-meta-item__label">Frames</div>
+            <div class="result-meta-item__val" id="resFrames">—</div>
+          </div>
+          <div class="result-meta-item">
+            <div class="result-meta-item__label">Frame Rate</div>
+            <div class="result-meta-item__val" id="resFps">—</div>
+          </div>
+          <div class="result-meta-item">
+            <div class="result-meta-item__label">File Size</div>
+            <div class="result-meta-item__val" id="resSize">—</div>
+          </div>
+        </div>
+        <div class="result-actions">
+          <button class="btn btn--fill" id="btnDownload">↓ Download GIF</button>
+          <button class="btn" id="btnNew">+ New Conversion</button>
+        </div>
+      </div>
+
+      <!-- Info -->
+      <div class="gif-info">
+        <strong>Powered by FFmpeg.wasm:</strong> This tool runs the real FFmpeg video engine compiled to WebAssembly — the same engine used in professional video software.
+        A 2-pass palette strategy (palettegen + paletteuse with lanczos scaling) produces dramatically better color quality than canvas-based encoders.
+        Your video never leaves your device. FFmpeg (~5 MB) loads once and is cached for subsequent conversions.
+      </div>
+
+    </div><!-- /gif-hero__right -->
+  </div><!-- /gif-hero -->
+
+  <!-- ══ INFO SECTION ════════════════════════ -->
+  <section class="section" id="info" style="border-top:1px solid var(--border);background:var(--card-bg);">
+    <div class="section__label">About This Tool</div>
+    <h2 class="section__title" style="font-size:clamp(2rem,5vw,4rem)">ABOUT THE<br>CONVERTER</h2>
+
+    <div class="features-grid" style="margin-top:2rem">
+      <div class="feature-item">
+        <div class="feature-item__num">→ Engine</div>
+        <div class="feature-item__title">FFmpeg.wasm</div>
+        <div class="feature-item__text">
+          gifonte uses FFmpeg compiled to WebAssembly — the same C-based engine behind professional video tools like Handbrake and DaVinci Resolve.
+          Running at near-native speed in your browser, it's orders of magnitude faster than JavaScript canvas-based encoders.
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-item__num">→ Quality</div>
+        <div class="feature-item__title">2-Pass Palette</div>
+        <div class="feature-item__text">
+          GIF supports 256 colors per frame. gifonte uses FFmpeg's 2-pass strategy: Pass 1 analyzes the video to build an optimal palette.
+          Pass 2 maps every frame to that palette with Lanczos scaling and your chosen dithering algorithm. The result is cinema-quality GIFs.
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-item__num">→ Performance</div>
+        <div class="feature-item__title">Optimization Tips</div>
+        <div class="feature-item__text">
+          For fastest results: use 320–480px width, 10–12 fps, duration under 5s, quality 15+.
+          For highest quality: use 640px+, 15–20 fps, quality 1–5, Floyd-Steinberg dithering.
+          FFmpeg loads once (~5 MB) and is cached — subsequent conversions start instantly.
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-item__num">→ Privacy</div>
+        <div class="feature-item__title">100% Local</div>
+        <div class="feature-item__text">
+          Your video never leaves your device. FFmpeg.wasm runs entirely in your browser using WebAssembly.
+          No uploads, no server processing, no account required. Files are read into browser memory and discarded when you close the tab.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ FOOTER ════════════════════════════════ -->
+  <footer class="footer">
+    <div class="footer__top">
+      <div>
+        <div class="footer__brand">gifonte</div>
+        <p class="footer__desc">Browser-based creative tools for text styling and media conversion. Client-side, private, built for creators.</p>
+        <div class="footer__social" style="margin-top:1.5rem">
+          <a href="https://tiktok.com/@neravdz" target="_blank" rel="noopener noreferrer">TikTok @neravdz</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer__heading">Tools</div>
+        <ul class="footer__list">
+          <li><a href="font.html">Font Generator</a></li>
+          <li><a href="gif.html">Video → GIF</a></li>
+          <li><a href="index.html#tools">All Tools</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer__heading">Site</div>
+        <ul class="footer__list">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="index.html#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer__heading">Legal</div>
+        <ul class="footer__list">
+          <li><a href="privacy.html">Privacy Policy</a></li>
+          <li><a href="terms.html">Terms of Use</a></li>
+          <li><a href="cookies.html">Cookie Policy</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <div class="footer__copy">© 2025 gifonte.com · TikTok: @neravdz</div>
+      <div class="footer__legal">
+        <a href="privacy.html">Privacy</a>
+        <a href="terms.html">Terms</a>
+        <a href="about.html">About</a>
+      </div>
+    </div>
+  </footer>
+
+  <div id="toast"></div>
+  <script src="js/main.js"></script>
+  <script src="js/gif-converter.js"></script>
+</body>
+</html>

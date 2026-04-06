@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>gifonte.com — Unicode Font Generator & Web Tools</title>
+  <meta name="description" content="gifonte.com — Transform text into 30+ Unicode styles and convert video to GIF. Creative web tools for designers and content creators." />
+  <meta name="keywords" content="font generator, unicode text, video to gif converter, text styles, fancy text, gif maker" />
+  <meta name="author" content="gifonte.com" />
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .hero {
+      padding-top: 52px;
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .hero__left {
+      padding: 6rem 3rem 5rem 2rem;
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .hero__right { position: relative; overflow: hidden; background: var(--card-bg); }
+    .hero__right-inner {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column; justify-content: flex-end; padding: 3rem;
+    }
+    .hero__eyebrow {
+      font-family: var(--font-mono); font-size: 0.6rem; font-weight: 600;
+      letter-spacing: 0.3em; text-transform: uppercase; color: var(--gray);
+      display: flex; align-items: center; gap: 0.75rem; margin-bottom: 2rem;
+    }
+    .hero__eyebrow::before { content: ''; width: 20px; height: 1px; background: var(--gray); }
+    .hero__title {
+      font-family: var(--font-display); font-size: clamp(4.5rem, 11vw, 10.5rem);
+      font-weight: 800; line-height: 0.86; letter-spacing: -0.03em; margin-bottom: 2.5rem;
+    }
+    .hero__title em {
+      font-style: italic; font-family: var(--font-serif); font-size: 0.72em;
+      font-weight: 400; letter-spacing: 0;
+    }
+    .hero__cta { display: flex; flex-wrap: wrap; }
+    .hero__meta {
+      display: flex; align-items: flex-end; gap: 2.5rem;
+      padding-top: 2.5rem; border-top: 1px solid var(--gray-lt);
+    }
+    .hero__meta-item { display: flex; flex-direction: column; gap: 0.2rem; }
+    .hero__meta-item strong {
+      font-family: var(--font-display); font-size: 2.5rem; font-weight: 800;
+      line-height: 1; letter-spacing: -0.03em;
+    }
+    .hero__meta-item span {
+      font-family: var(--font-mono); font-size: 0.6rem;
+      letter-spacing: 0.2em; text-transform: uppercase; color: var(--gray);
+    }
+    .hero__panel-label {
+      font-family: var(--font-mono); font-size: 0.6rem; font-weight: 600;
+      letter-spacing: 0.25em; text-transform: uppercase; color: var(--gray);
+      margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;
+    }
+    .hero__panel-label::before { content: ''; display: block; width: 12px; height: 1px; background: var(--gray); }
+    .hero__panel-title {
+      font-family: var(--font-serif); font-style: italic;
+      font-size: clamp(1.8rem, 3vw, 2.8rem); line-height: 1.15; margin-bottom: 0.75rem;
+    }
+    .hero__panel-sub { font-family: var(--font-mono); font-size: 0.7rem; color: var(--gray); line-height: 1.8; }
+    .hero__panel-text { position: relative; z-index: 2; }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; margin-top: 4rem; }
+    .about-left { border-right: 1px solid var(--border); padding-right: 4rem; }
+    .about-left p { font-family: var(--font-mono); font-size: 0.78rem; color: var(--gray); line-height: 2; margin-bottom: 1.5rem; }
+    .about-left strong { color: var(--fg); }
+    .about-right { padding-left: 4rem; }
+    .about-point { padding: 1.5rem 0; border-bottom: 1px solid var(--gray-lt); display: grid; grid-template-columns: 2rem 1fr; gap: 1rem; }
+    .about-point:last-child { border-bottom: none; }
+    .about-point__num { font-family: var(--font-mono); font-size: 0.6rem; font-weight: 600; color: var(--gray); letter-spacing: 0.1em; padding-top: 0.1rem; }
+    .about-point__title { font-family: var(--font-teko); font-size: 0.9rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 0.3rem; }
+    .about-point__text { font-family: var(--font-mono); font-size: 0.68rem; color: var(--gray); line-height: 1.8; }
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; min-height: auto; }
+      .hero__left { border-right: none; border-bottom: 1px solid var(--border); }
+      .hero__right { min-height: 320px; }
+      .about-grid { grid-template-columns: 1fr; }
+      .about-left { border-right: none; border-bottom: 1px solid var(--border); padding-right: 0; padding-bottom: 3rem; }
+      .about-right { padding-left: 0; padding-top: 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a class="nav__logo" href="index.html">gifonte.com</a>
+    <div class="nav__links">
+      <a href="#hero">Home</a>
+      <a href="#tools">Tools</a>
+      <a href="#features">Features</a>
+      <a href="#about">About</a>
+      <a href="#how">How It Works</a>
+      <a href="#contact">Contact</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="about.html">About Us</a>
+    </div>
+    <div class="nav__right">
+      <button class="btn-theme" id="btnTheme" title="Toggle dark mode">◐</button>
+      <button class="nav__hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+  <div class="nav__mobile" id="mobileMenu">
+    <a href="#hero">Home</a><a href="#tools">Tools</a><a href="#features">Features</a>
+    <a href="#about">About</a><a href="#how">How It Works</a><a href="#contact">Contact</a>
+    <a href="privacy.html">Privacy</a><a href="about.html">About Us</a>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="hero__left">
+      <div>
+        <div class="hero__eyebrow">gifonte.com · Creative Tools</div>
+        <h1 class="hero__title">GI<br><em>fonte</em><br>.COM</h1>
+        <div class="hero__cta">
+          <a href="font.html" class="btn btn--fill">→ Font Generator</a>
+          <a href="gif.html" class="btn">Video → GIF</a>
+        </div>
+      </div>
+      <div class="hero__meta">
+        <div class="hero__meta-item"><strong>30</strong><span>Font Styles</span></div>
+        <div class="hero__meta-item"><strong>2</strong><span>Live Tools</span></div>
+        <div class="hero__meta-item"><strong>4+</strong><span>Coming Soon</span></div>
+      </div>
+    </div>
+    <div class="hero__right">
+      <img src="assets/bust.png" class="bust-ghost" alt="" aria-hidden="true" />
+      <div class="hero__right-inner">
+        <div class="hero__panel-text">
+          <div class="hero__panel-label">Built for creators</div>
+          <div class="hero__panel-title">Text that stands<br>apart. GIFs that<br>speak.</div>
+          <div class="hero__panel-sub">Unicode typography tools and<br>high-quality video conversion.<br>Runs entirely in your browser.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee-wrap" aria-hidden="true">
+    <div class="marquee-track">
+      <span>𝕱𝖔𝖓𝖙 𝕲𝖊𝖓𝖊𝖗𝖆𝖙𝖔𝖗</span><span>𝓥𝓲𝓭𝓮𝓸 → GIF</span>
+      <span>𝗨𝗻𝗶𝗰𝗼𝗱𝗲 𝗦𝘁𝘆𝗹𝗲𝘀</span><span>gifonte.com</span>
+      <span>𝐂𝐑𝐄𝐀𝐓𝐈𝐕𝐄 𝐓𝐘𝐏𝐄</span><span>Ⓣ𝔼𝕏𝕋 Ⓣ𝕆𝕆𝕃𝕊</span>
+      <span>𝕱𝖔𝖓𝖙 𝕲𝖊𝖓𝖊𝖗𝖆𝖙𝖔𝖗</span><span>𝓥𝓲𝓭𝓮𝓸 → GIF</span>
+      <span>𝗨𝗻𝗶𝗰𝗼𝗱𝗲 𝗦𝘁𝘆𝗹𝗲𝘀</span><span>gifonte.com</span>
+      <span>𝐂𝐑𝐄𝐀𝐓𝐈𝐕𝐄 𝐓𝐘𝐏𝐄</span><span>Ⓣ𝔼𝕏𝕋 Ⓣ𝕆𝕆𝕃𝕊</span>
+    </div>
+  </div>
+
+  <!-- TOOLS -->
+  <section class="section" id="tools">
+    <div class="section__label">Our Tools</div>
+    <h2 class="section__title reveal">TOOLS</h2>
+    <p class="section__subtitle reveal">A growing suite of text and media utilities. No account needed — everything runs in the browser.</p>
+    <div class="grid-tools reveal">
+
+      <a href="font.html" class="card-tool">
+        <div class="card-tool__num">01</div>
+        <div class="card-tool__icon">𝔉</div>
+        <span class="card-tool__tag card-tool__tag--active">Live</span>
+        <h3 class="card-tool__title">Font Generator</h3>
+        <p class="card-tool__desc">Transform any text into 30 unique Unicode styles. Bold, italic, script, fraktur, symbols, zalgo glitch & more.</p>
+        <span class="card-tool__arrow">↗</span>
+      </a>
+
+      <a href="gif.html" class="card-tool">
+        <div class="card-tool__num">02</div>
+        <div class="card-tool__icon">▶</div>
+        <span class="card-tool__tag card-tool__tag--active">Live</span>
+        <h3 class="card-tool__title">Video → GIF</h3>
+        <p class="card-tool__desc">Convert any video clip to a high-quality GIF directly in your browser. Control FPS, size, duration, quality. No server uploads.</p>
+        <span class="card-tool__arrow">↗</span>
+      </a>
+
+      <div class="card-tool card-tool--soon">
+        <div class="card-tool__num">03</div>
+        <div class="card-tool__icon">⟨⟩</div>
+        <span class="card-tool__tag">Coming Soon</span>
+        <h3 class="card-tool__title">Text Analyzer</h3>
+        <p class="card-tool__desc">Deep analysis: readability score, word frequency, sentence structure, and linguistic statistics.</p>
+      </div>
+
+      <div class="card-tool card-tool--soon">
+        <div class="card-tool__num">04</div>
+        <div class="card-tool__icon">¶</div>
+        <span class="card-tool__tag">Coming Soon</span>
+        <h3 class="card-tool__title">Lorem Generator</h3>
+        <p class="card-tool__desc">Placeholder text in multiple styles. Customizable paragraphs, words, and character counts for design mockups.</p>
+      </div>
+
+      <div class="card-tool card-tool--soon">
+        <div class="card-tool__num">05</div>
+        <div class="card-tool__icon">✦</div>
+        <span class="card-tool__tag">Coming Soon</span>
+        <h3 class="card-tool__title">CSS Text Effects</h3>
+        <p class="card-tool__desc">Neon glow, 3D extrusion, gradient text, cinematic blur. Visual CSS effects with export-ready code.</p>
+      </div>
+
+      <div class="card-tool card-tool--soon">
+        <div class="card-tool__num">06</div>
+        <div class="card-tool__icon">Aa</div>
+        <span class="card-tool__tag">Coming Soon</span>
+        <h3 class="card-tool__title">Font Pairing</h3>
+        <p class="card-tool__desc">Curated Google Fonts combinations with live preview. Discover typographic pairings for any project.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <div class="stats-row reveal" style="margin: 0 2rem;">
+    <div class="stat-item"><div class="stat-item__num">30</div><div class="stat-item__label">Font Styles</div></div>
+    <div class="stat-item"><div class="stat-item__num">9</div><div class="stat-item__label">Categories</div></div>
+    <div class="stat-item"><div class="stat-item__num">4K</div><div class="stat-item__label">Max GIF Width</div></div>
+    <div class="stat-item"><div class="stat-item__num">0</div><div class="stat-item__label">Data Collected</div></div>
+  </div>
+
+  <!-- FEATURES -->
+  <section class="section" id="features">
+    <div class="section__label">Why gifonte</div>
+    <h2 class="section__title reveal">FEATURES</h2>
+    <div class="features-grid reveal">
+      <div class="feature-item">
+        <div class="feature-item__num">01 — Client-Side</div>
+        <div class="feature-item__title">Runs In Your Browser</div>
+        <div class="feature-item__text">Every operation — font generation, video processing, GIF encoding — happens locally via WebAssembly and JavaScript. Your files never leave your device.</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-item__num">02 — Universal</div>
+        <div class="feature-item__title">Works Everywhere</div>
+        <div class="feature-item__text">Generated Unicode text pastes directly into Instagram, Twitter, TikTok, Discord, WhatsApp. GIF output is a standard file compatible with every platform.</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-item__num">03 — No Compromise</div>
+        <div class="feature-item__title">Quality First</div>
+        <div class="feature-item__text">The GIF converter uses a dithering-optimized encoder with configurable palette and frame rate. Results are sharp, not washed out like most online converters.</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-item__num">04 — Private</div>
+        <div class="feature-item__title">Zero Tracking</div>
+        <div class="feature-item__text">No analytics, no advertising pixels, no session recording. The only storage used is a single theme preference key — it never leaves your device.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="section" id="about">
+    <div class="section__label">About gifonte</div>
+    <h2 class="section__title reveal">THE<br>VISION</h2>
+    <div class="about-grid reveal">
+      <div class="about-left">
+        <p><strong>gifonte.com</strong> is a collection of browser-based creative tools for people who care about the details of how their content looks and moves.</p>
+        <p>The name combines <strong>GIF</strong> and <strong>fonte</strong> — the Italian and Portuguese word for font. Two mediums, one platform. Started with a text style generator, now expanding into media tools.</p>
+        <p>Everything is built as static HTML, CSS, and JavaScript — no backend, no dependencies, runs everywhere. Follow the project on TikTok <strong>@neravdz</strong>.</p>
+        <a href="font.html" class="btn btn--fill" style="margin-top:1rem">→ Start Creating</a>
+      </div>
+      <div class="about-right">
+        <div class="about-point">
+          <span class="about-point__num">A</span>
+          <div><div class="about-point__title">No Backend</div><div class="about-point__text">Static architecture. Works offline once loaded. Deployable on GitHub Pages, Netlify, or any CDN.</div></div>
+        </div>
+        <div class="about-point">
+          <span class="about-point__num">B</span>
+          <div><div class="about-point__title">No Accounts</div><div class="about-point__text">No registration, no email, no password. Just open the tool and use it — always.</div></div>
+        </div>
+        <div class="about-point">
+          <span class="about-point__num">C</span>
+          <div><div class="about-point__title">Expanding</div><div class="about-point__text">New tools ship regularly. Text Analyzer, Lorem Generator, CSS Effects and more are in development.</div></div>
+        </div>
+        <div class="about-point">
+          <span class="about-point__num">D</span>
+          <div><div class="about-point__title">Made for Creators</div><div class="about-point__text">Social media creators, motion designers, developers, typographers. If you make content, this is for you.</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="section section--flush" id="how" style="background:var(--card-bg);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+    <div class="section__label">Usage</div>
+    <h2 class="section__title reveal">HOW<br>IT WORKS</h2>
+    <div class="stats-row reveal" style="margin-top:3rem;background:var(--bg);">
+      <div class="stat-item"><div class="stat-item__num" style="font-size:2rem">01</div><div class="stat-item__label" style="font-size:0.7rem;margin-top:0.5rem;color:var(--fg);text-transform:none;letter-spacing:0">Choose a tool from the grid</div></div>
+      <div class="stat-item"><div class="stat-item__num" style="font-size:2rem">02</div><div class="stat-item__label" style="font-size:0.7rem;margin-top:0.5rem;color:var(--fg);text-transform:none;letter-spacing:0">Type text or drop a video file</div></div>
+      <div class="stat-item"><div class="stat-item__num" style="font-size:2rem">03</div><div class="stat-item__label" style="font-size:0.7rem;margin-top:0.5rem;color:var(--fg);text-transform:none;letter-spacing:0">Results generate in real time</div></div>
+      <div class="stat-item"><div class="stat-item__num" style="font-size:2rem">04</div><div class="stat-item__label" style="font-size:0.7rem;margin-top:0.5rem;color:var(--fg);text-transform:none;letter-spacing:0">Copy text or download your GIF</div></div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="section" id="contact">
+    <div class="section__label">Connect</div>
+    <h2 class="section__title reveal">CONTACT</h2>
+    <p class="section__subtitle reveal" style="margin-bottom:3rem">Tool requests, feedback, collaborations — reach out on TikTok. Every message is read.</p>
+    <a href="https://tiktok.com/@neravdz" target="_blank" rel="noopener noreferrer" class="btn btn--fill">↗ @neravdz on TikTok</a>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer__top">
+      <div>
+        <div class="footer__brand">gifonte</div>
+        <p class="footer__desc">Browser-based creative tools for text styling and media conversion. Client-side, private, and built for creators who care about craft.</p>
+        <div class="footer__social" style="margin-top:1.5rem"><a href="https://tiktok.com/@neravdz" target="_blank" rel="noopener noreferrer">TikTok @neravdz</a></div>
+      </div>
+      <div>
+        <div class="footer__heading">Tools</div>
+        <ul class="footer__list">
+          <li><a href="font.html">Font Generator</a></li>
+          <li><a href="gif.html">Video → GIF</a></li>
+          <li><a href="#tools">Text Analyzer (Soon)</a></li>
+          <li><a href="#tools">Lorem Generator (Soon)</a></li>
+          <li><a href="#tools">CSS Text Effects (Soon)</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer__heading">Site</div>
+        <ul class="footer__list">
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li><a href="https://tiktok.com/@neravdz" target="_blank">TikTok</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer__heading">Legal</div>
+        <ul class="footer__list">
+          <li><a href="privacy.html">Privacy Policy</a></li>
+          <li><a href="terms.html">Terms of Use</a></li>
+          <li><a href="cookies.html">Cookie Policy</a></li>
+          <li><a href="disclaimer.html">Disclaimer</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <div class="footer__copy">© 2025 gifonte.com · TikTok: @neravdz</div>
+      <div class="footer__legal">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Use</a>
+        <a href="cookies.html">Cookies</a>
+        <a href="about.html">About</a>
+      </div>
+    </div>
+  </footer>
+
+  <div id="toast"></div>
+  <script src="js/main.js"></script>
+</body>
+</html>
