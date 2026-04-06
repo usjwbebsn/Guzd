@@ -120,3 +120,66 @@
     }
   };
 })();
+
+/* ── Search ─────────────────────────────────────────────────── */
+(function () {
+  const searchBtn     = document.getElementById('searchBtn');
+  const navSearch     = document.getElementById('navSearch');
+  const searchInput   = document.getElementById('searchInput');
+  const searchResults = document.getElementById('searchResults');
+  const searchNoRes   = document.getElementById('searchNoResults');
+  if (!searchBtn) return;
+
+  const items = searchResults ? Array.from(searchResults.querySelectorAll('.search-result-item')) : [];
+
+  searchBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    navSearch.classList.toggle('open');
+    if (navSearch.classList.contains('open')) {
+      searchInput.focus();
+    } else {
+      searchResults.classList.remove('visible');
+      searchInput.value = '';
+    }
+  });
+
+  searchInput.addEventListener('input', () => {
+    const q = searchInput.value.trim().toLowerCase();
+    if (!q) { searchResults.classList.remove('visible'); return; }
+    let found = 0;
+    items.forEach(item => {
+      const text = item.textContent.toLowerCase();
+      const match = text.includes(q);
+      item.style.display = match ? '' : 'none';
+      if (match) found++;
+    });
+    if (searchNoRes) searchNoRes.style.display = found === 0 ? 'block' : 'none';
+    searchResults.classList.add('visible');
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!navSearch.contains(e.target)) {
+      navSearch.classList.remove('open');
+      searchResults.classList.remove('visible');
+      searchInput.value = '';
+    }
+  });
+
+  searchInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      navSearch.classList.remove('open');
+      searchResults.classList.remove('visible');
+      searchInput.value = '';
+    }
+  });
+})();
+
+/* ── Mobile menu icon toggle ────────────────────────────────── */
+(function () {
+  const hamburger  = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  if (!hamburger || !mobileMenu) return;
+  hamburger.addEventListener('click', () => {
+    mobileMenu.classList.toggle('open');
+  });
+})();
