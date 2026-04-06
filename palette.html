@@ -3,23 +3,22 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Font Generator — 30 Unicode Styles | gifonte.com</title>
-  <meta name="description" content="Free online font generator. Transform any text into 30 unique Unicode styles: bold, italic, script, fraktur, circled, zalgo glitch, and more." />
-  <meta name="keywords" content="font generator, unicode text generator, fancy text, bold text generator, copy paste fonts" />
+  <title>Color Palette Extractor | gifonte.com</title>
+  <meta name="description" content="Extract dominant colors from any image or video frame. Export as HEX, RGB, HSL, CSS variables, Tailwind, SCSS and JSON. gifonte.com" />
   <link rel="stylesheet" href="css/style.css" />
-  <link rel="stylesheet" href="css/font.css" />
+  <link rel="stylesheet" href="css/palette.css" />
 </head>
 <body>
 
-  <!-- ══ NAVIGATION ══════════════════════════ -->
+  <!-- ══ NAV ══════════════════════════════════ -->
     <nav class="nav">
     <a class="nav__logo" href="index.html">gifonte.com</a>
     <div class="nav__links">
       <a href="index.html#hero"><span class="icon icon--sm"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span> Home</a>
       <a href="index.html#tools"><span class="icon icon--sm"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></span> Tools</a>
-      <a href="font.html" class="active"><span class="icon icon--sm"><svg viewBox="0 0 24 24"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg></span> Font Gen</a>
+      <a href="font.html"><span class="icon icon--sm"><svg viewBox="0 0 24 24"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg></span> Font Gen</a>
       <a href="gif.html"><span class="icon icon--sm"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="2" y1="7" x2="7" y2="7"/><line x1="2" y1="17" x2="7" y2="17"/><line x1="17" y1="17" x2="22" y2="17"/><line x1="17" y1="7" x2="22" y2="7"/></svg></span> GIF</a>
-      <a href="palette.html"><span class="icon icon--sm"><svg viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 11-11.31 0z"/></svg></span> Palette</a>
+      <a href="palette.html" class="active"><span class="icon icon--sm"><svg viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 11-11.31 0z"/></svg></span> Palette</a>
       <a href="privacy.html"><span class="icon icon--sm"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span> Privacy</a>
       <a href="about.html"><span class="icon icon--sm"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span> About</a>
     </div>
@@ -51,125 +50,178 @@
     <a href="about.html"><span class="icon icon--md"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span> About</a>
   </div>
 
-  <!-- ══ GENERATOR HERO ══════════════════════ -->
-  <div class="gen-hero">
+  <!-- ══ HERO ═════════════════════════════════ -->
+  <div class="pal-hero">
 
-    <!-- Left: Title + controls -->
-    <div class="gen-hero__left">
+    <!-- Left -->
+    <div class="pal-hero__left">
       <div>
-        <div class="gen-hero__eyebrow">Font Generator · 30 Styles</div>
-        <h1 class="gen-hero__title">
-          FONT<br>GENE<br>RATOR
+        <div class="pal-hero__eyebrow">Tool 03 · Color Intelligence</div>
+        <h1 class="pal-hero__title">
+          COLOR<br>
+          <em>palette</em><br>
+          EXTRACT
         </h1>
       </div>
-
-      <div class="gen-hero__bottom">
-        <div class="gen-hero__bottom-stat">
-          <strong>30</strong>
-          <span>Styles</span>
+      <div class="pal-hero__bottom">
+        <div class="pal-stat">
+          <strong>1080p</strong>
+          <span>Max Input</span>
         </div>
-        <div class="gen-hero__bottom-stat">
-          <strong>9</strong>
-          <span>Categories</span>
+        <div class="pal-stat">
+          <strong>7</strong>
+          <span>Export Formats</span>
         </div>
-        <div class="gen-hero__bottom-stat">
-          <strong>Free</strong>
-          <span>Forever</span>
+        <div class="pal-stat">
+          <strong>0</strong>
+          <span>Uploads</span>
         </div>
       </div>
     </div>
 
-    <!-- Right: Input + info -->
-    <div class="gen-hero__right">
-      <img src="assets/bust.png" class="bust-ghost" alt="" aria-hidden="true" />
+    <!-- Right: upload + settings -->
+    <div class="pal-hero__right">
 
-      <div class="gen-input-label">Type your text</div>
-      <div class="gen-input-wrap">
-        <textarea
-          id="mainInput"
-          placeholder="Type here..."
-          spellcheck="false"
-          autocomplete="off"
-          rows="3"
-          maxlength="200"
-        ></textarea>
+      <div class="upload-label">01 — Drop your image or video</div>
+      <div class="drop-zone" id="dropZone">
+        <input type="file" id="fileInput" accept="image/*,video/*" />
+        <div class="drop-zone__icon">◉</div>
+        <div class="drop-zone__text">Drop image or video</div>
+        <div class="drop-zone__sub">JPG · PNG · WebP · GIF · MP4 · Any format</div>
       </div>
 
-      <div class="gen-controls">
-        <button class="btn btn--fill" id="btnGenerate">→ Generate</button>
-        <button class="btn" id="btnCopyAll">Copy All</button>
-        <button class="btn" id="btnClear">Clear</button>
+      <!-- Preview -->
+      <div id="previewWrap">
+        <img id="previewImg" alt="Preview" />
+        <div class="preview-info">
+          <span id="previewName">—</span>
+          <span>Res: <span id="previewDims">—</span></span>
+          <span>Size: <span id="previewSize">—</span></span>
+        </div>
       </div>
 
-      <div class="gen-info">
-        <strong>How to use:</strong> Type any text above and all 30 font styles will update instantly.
-        Click any result row or the COPY button to copy that style to your clipboard.
-        Works on Instagram, TikTok, Twitter, Discord, and anywhere Unicode is supported.
+      <!-- Settings -->
+      <div class="upload-label">02 — Configure extraction</div>
+      <div class="settings-grid">
+        <div class="setting-item">
+          <label for="selCount">Number of colors</label>
+          <select id="selCount">
+            <option value="4">4 — Minimal</option>
+            <option value="6">6 — Standard</option>
+            <option value="8" selected>8 — Detailed</option>
+            <option value="12">12 — Extended</option>
+            <option value="16">16 — Full</option>
+          </select>
+        </div>
+        <div class="setting-item">
+          <label for="selMode">Extraction mode</label>
+          <select id="selMode">
+            <option value="all" selected>All colors — Balanced</option>
+            <option value="vibrant">Vibrant — Saturated only</option>
+            <option value="muted">Muted — Neutrals only</option>
+          </select>
+        </div>
       </div>
 
-      <div class="gen-info" style="margin-top:0; border-top: none;">
-        <strong>What are Unicode fonts?</strong> These are not actual fonts — they are special Unicode
-        characters that look like styled letters. They render the same on every device and platform.
-        No font installation needed.
+      <!-- Controls -->
+      <div class="upload-label">03 — Extract</div>
+      <div class="pal-controls">
+        <button class="btn btn--fill" id="btnExtract" disabled>◉ Extract Palette</button>
+        <button class="btn" id="btnReset">✕ Reset</button>
       </div>
+
+      <!-- Info -->
+      <div class="gif-info">
+        <strong>How it works:</strong> K-means clustering analyzes pixel data to find the most dominant color groups in your image. Supports images and video frames (first frame extracted automatically). All processing is local — no uploads, no server.
+      </div>
+
     </div>
   </div>
 
-  <!-- ══ RESULTS ═════════════════════════════ -->
-  <div class="results-section">
+  <!-- ══ PALETTE OUTPUT ════════════════════════ -->
+  <section id="paletteSection" class="palette-section">
 
-    <!-- Header -->
-    <div class="results-section__header">
-      <div class="results-section__title">RESULTS</div>
-      <div id="styleCount" class="results-section__count">30 STYLES</div>
+    <div class="palette-section__header">
+      <div>
+        <div class="section__label" style="margin-bottom:0.5rem">Extracted Colors</div>
+        <div class="palette-section__title">YOUR PALETTE</div>
+        <div style="font-family:var(--font-mono);font-size:0.65rem;color:var(--gray);margin-top:0.4rem" id="extractedCount"></div>
+      </div>
+      <div class="palette-section__actions">
+        <button class="btn" id="btnCopyAll">Copy All HEX</button>
+      </div>
     </div>
 
-    <!-- Filter bar -->
-    <div class="filter-bar" id="filterBar"></div>
+    <!-- Color strip -->
+    <div class="color-strip" id="colorStrip"></div>
 
-    <!-- Grid -->
-    <div id="resultsGrid"></div>
+    <!-- Empty state -->
+    <div class="palette-empty" id="paletteEmpty">
+      <div class="palette-empty__title">No palette yet</div>
+      <div class="palette-empty__text">Upload an image and click Extract</div>
+    </div>
 
-  </div>
+    <!-- Cards grid -->
+    <div class="colors-grid" id="colorsGrid"></div>
 
-  <!-- ══ INFO SECTION ════════════════════════ -->
-  <section class="section" id="info" style="border-top: 1px solid var(--border); background: var(--card-bg);">
+    <!-- Export panel -->
+    <div class="export-panel" id="exportPanel">
+      <div class="export-tabs">
+        <button class="export-tab active" data-format="css">CSS Vars</button>
+        <button class="export-tab" data-format="hex">HEX</button>
+        <button class="export-tab" data-format="rgb">RGB</button>
+        <button class="export-tab" data-format="hsl">HSL</button>
+        <button class="export-tab" data-format="tailwind">Tailwind</button>
+        <button class="export-tab" data-format="scss">SCSS</button>
+        <button class="export-tab" data-format="json">JSON</button>
+      </div>
+      <div class="export-code">
+        <pre id="exportPre"></pre>
+        <button class="export-copy-btn" id="exportCopyBtn">Copy Code</button>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ══ INFO SECTION ══════════════════════════ -->
+  <section class="section" style="border-top:1px solid var(--border);background:var(--card-bg);">
     <div class="section__label">About This Tool</div>
-    <h2 class="section__title" style="font-size: clamp(2rem, 5vw, 4rem);">ABOUT<br>THE GENERATOR</h2>
-
-    <div class="features-grid" style="margin-top: 2rem;">
+    <h2 class="section__title" style="font-size:clamp(2rem,5vw,4rem)">WHY<br>COLOR MATTERS</h2>
+    <div class="features-grid" style="margin-top:2rem">
       <div class="feature-item">
-        <div class="feature-item__num">→ Mathematical Styles</div>
-        <div class="feature-item__title">Unicode Math Block</div>
+        <div class="feature-item__num">→ Algorithm</div>
+        <div class="feature-item__title">K-Means Clustering</div>
         <div class="feature-item__text">
-          The Unicode Standard includes a dedicated Mathematical Alphanumeric Symbols block (U+1D400–U+1D7FF)
-          with bold, italic, script, fraktur, sans-serif, monospace, and double-struck variants of the Latin alphabet.
-          These are the backbone of most style transformations on gifonte.
+          Pixels are grouped into color clusters using iterative K-means optimization.
+          Each cluster centroid represents a dominant color in the image.
+          12 iterations ensure convergence even on complex, gradient-heavy imagery.
         </div>
       </div>
       <div class="feature-item">
-        <div class="feature-item__num">→ Compatibility</div>
-        <div class="feature-item__title">Where It Works</div>
+        <div class="feature-item__num">→ Accessibility</div>
+        <div class="feature-item__title">WCAG Contrast Check</div>
         <div class="feature-item__text">
-          Unicode text renders correctly on Instagram, TikTok, Twitter/X, Facebook, WhatsApp, Discord, Telegram,
-          Reddit, LinkedIn, YouTube comments, and any modern app. Some very old apps may show □ for unsupported glyphs.
+          Every extracted color is automatically checked against WCAG 2.1 standards.
+          AA (4.5:1), AA Large (3:1), and AAA (7:1) badges tell you instantly
+          whether the color is safe for text on white or black backgrounds.
         </div>
       </div>
       <div class="feature-item">
-        <div class="feature-item__num">→ Diacritics</div>
-        <div class="feature-item__title">Combining Characters</div>
+        <div class="feature-item__num">→ Export</div>
+        <div class="feature-item__title">7 Ready-to-Use Formats</div>
         <div class="feature-item__text">
-          Strikethrough, underline, overline and zalgo effects use Unicode combining diacritic marks —
-          characters that attach visually to the previous character. They look different across fonts
-          but always produce the intended effect.
+          CSS custom properties, raw HEX list, RGB, HSL, Tailwind config object,
+          SCSS variables + map, and JSON token format. Copy and paste directly
+          into your project — no reformatting needed.
         </div>
       </div>
       <div class="feature-item">
-        <div class="feature-item__num">→ Privacy</div>
-        <div class="feature-item__title">Local Processing</div>
+        <div class="feature-item__num">→ Video</div>
+        <div class="feature-item__title">Frame Extraction</div>
         <div class="feature-item__text">
-          Every transformation happens in your browser via JavaScript. Your text is never sent to any
-          server, stored in any database, or visible to anyone. gifonte is completely client-side.
+          Drop any MP4, WebM, or MOV file — gifonte automatically pulls the first
+          meaningful frame and extracts its color palette. Perfect for matching
+          your design to a film reference or footage grade.
         </div>
       </div>
     </div>
@@ -180,23 +232,19 @@
     <div class="footer__top">
       <div>
         <div class="footer__brand">gifonte</div>
-        <p class="footer__desc">
-          Free Unicode text style generator. 30 styles, 9 categories.
-          No accounts, no tracking, no server. Fully client-side.
-        </p>
-        <div class="footer__social" style="margin-top: 1.5rem;">
+        <p class="footer__desc">Browser-based creative tools for designers, developers and video editors. Client-side, private, built for creators.</p>
+        <div class="footer__social" style="margin-top:1.5rem">
           <a href="https://tiktok.com/@neravdz" target="_blank" rel="noopener noreferrer">TikTok @neravdz</a>
         </div>
       </div>
-
       <div>
         <div class="footer__heading">Tools</div>
         <ul class="footer__list">
           <li><a href="font.html"><span class="icon icon--sm"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></span> Font Generator</a></li>
-          <li><a href="index.html#tools"><span class="icon icon--sm"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></span> All Tools</a></li>
+          <li><a href="gif.html"><span class="icon icon--sm"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></span> Video → GIF</a></li>
+          <li><a href="palette.html"><span class="icon icon--sm"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></span> Color Palette</a></li>
         </ul>
       </div>
-
       <div>
         <div class="footer__heading">Site</div>
         <ul class="footer__list">
@@ -205,7 +253,6 @@
           <li><a href="index.html#contact"><span class="icon icon--sm"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></span> Contact</a></li>
         </ul>
       </div>
-
       <div>
         <div class="footer__heading">Legal</div>
         <ul class="footer__list">
@@ -215,14 +262,10 @@
         </ul>
       </div>
     </div>
-
     <div class="footer__bottom">
-      <div class="footer__copy">
-        © 2025 gifonte.com · All rights reserved. · TikTok: @neravdz
-      </div>
+      <div class="footer__copy">© 2025 gifonte.com · TikTok: @neravdz</div>
       <div class="footer__legal">
-        <a href="palette.html">Palette</a>
-      <a href="privacy.html">Privacy</a>
+        <a href="privacy.html">Privacy</a>
         <a href="terms.html">Terms</a>
         <a href="about.html">About</a>
       </div>
@@ -230,8 +273,7 @@
   </footer>
 
   <div id="toast"></div>
-
   <script src="js/main.js"></script>
-  <script src="js/font.js"></script>
+  <script src="js/palette.js"></script>
 </body>
 </html>
