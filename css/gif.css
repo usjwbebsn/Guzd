@@ -392,6 +392,11 @@
   font-size: 0.7rem;
   font-weight: 600;
   letter-spacing: 0.08em;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 /* ── Info sections ── */
